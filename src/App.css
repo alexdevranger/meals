@@ -1,0 +1,107 @@
+.wrapper {
+  padding-top: 30px;
+}
+
+body h3 {
+  margin-bottom: 25px;
+}
+
+.navbar-brand a {
+  color: #ffffff;
+}
+
+.form-wrapper {
+  max-width: 700px;
+  margin: auto;
+}
+.table-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+.day {
+  width: 7%;
+}
+.time {
+  width: 9%;
+}
+.mealDetail {
+  width: 70%;
+}
+.action {
+  width: 10%;
+  text-align: center;
+}
+.edit-link {
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  line-height: normal;
+  border-radius: 0.2rem;
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.edit-link:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
+.green-btn {
+  background-color: #3bb19b;
+  color: #fff;
+  text-shadow: none;
+  background-image: none;
+  cursor: pointer;
+  display: inline-block;
+  min-height: 1em;
+  outline: 0;
+  border: none;
+  vertical-align: baseline;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  margin: 0 0.25em 0 0;
+  padding: 0.78571429em 1.5em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: 700;
+  line-height: 1em;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.28571429rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+    box-shadow 0.1s ease, background 0.1s ease;
+}
+.selectHolder {
+  width: 700px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+.w100 {
+  width: 100px;
+}
+.create-edit-btn {
+  display: block;
+  text-align: center;
+  margin: auto;
+}
