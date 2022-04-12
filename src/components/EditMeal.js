@@ -5,6 +5,7 @@ import axios from "axios";
 //import { Router, Route, Switch, useHistory, create } from "react-router-dom";
 //import { createBrowserHistory } from "history";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 //const history = createBrowserHistory();
 
@@ -17,6 +18,7 @@ export default function EditMeal(props) {
     day: "",
     time: "",
     mealDetail: "",
+    timestamp: "",
   });
   //console.log(this.props.match.params.id);
   React.useEffect(() => {
@@ -28,6 +30,7 @@ export default function EditMeal(props) {
             day: res.data.day,
             time: res.data.time,
             mealDetail: res.data.mealDetail,
+            timestamp: res.data.timestamp,
           });
           console.log(res.data);
         })
@@ -38,14 +41,23 @@ export default function EditMeal(props) {
     getMeals();
   }, []);
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    e.preventDefault();
     setEditFormData((prevEditFormData) => {
+      const editDayValue = document.getElementById("editDay").value;
+      const editTimeValue = document.getElementById("editTime").value;
+      const editMealValue = document.getElementById("editMealDetail").value;
+      const editUnix = parseInt(
+        moment(editDayValue, "DD-MMM-YYYY").format("X")
+      );
       return {
-        ...prevEditFormData,
-        [name]: value,
+        day: editDayValue,
+        time: editTimeValue,
+        mealDetail: editMealValue,
+        timestamp: editUnix,
       };
     });
   };
+  console.log("editFormData", editFormData);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -69,30 +81,43 @@ export default function EditMeal(props) {
   return (
     <div className="form-wrapper">
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="Day">
+        <Form.Group>
           <Form.Label>Day</Form.Label>
           <Form.Control
             type="text"
+            id="editDay"
             value={editFormData.day}
             name="day"
             onChange={handleChange}
           />
         </Form.Group>
+        <Form.Group>
+          <Form.Label>Day</Form.Label>
+          <Form.Control
+            type="text"
+            id="editTimestamp"
+            value={editFormData.timestamp}
+            name="timestamp"
+            onChange={handleChange}
+          />
+        </Form.Group>
 
-        <Form.Group controlId="Time">
+        <Form.Group>
           <Form.Label>Time</Form.Label>
           <Form.Control
             type="text"
+            id="editTime"
             value={editFormData.time}
             name="time"
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="MealDetail">
+        <Form.Group>
           <Form.Label>Meal Detail</Form.Label>
           <Form.Control
             type="text"
+            id="editMealDetail"
             value={editFormData.mealDetail}
             name="mealDetail"
             onChange={handleChange}

@@ -1,3 +1,4 @@
+require("dotenv").config();
 let express = require("express");
 let mongoose = require("mongoose");
 let cors = require("cors");
@@ -13,7 +14,8 @@ const connectionParams = {
   useUnifiedTopology: true,
 };
 mongoose
-  .connect("mongodb://127.0.0.1:27017/reactstudents", connectionParams)
+  //.connect("mongodb://127.0.0.1:27017/reactstudents", connectionParams)
+  .connect(process.env.DB, connectionParams)
   .then((x) => {
     console.log('Connected to Mongo! Database name: "reactstudents"');
   })
@@ -32,19 +34,23 @@ app.use(cors());
 app.use("/students", studentRoute);
 app.use("/meals", mealsRoute);
 
-// PORT
-const port = process.env.PORT || 4000;
-const server = app.listen(port, () => {
-  console.log("Connected to port " + port);
-});
-
 // 404 Error
 app.use((req, res, next) => {
-  next(createError(404));
+  res.status(404);
+  res.send({
+    error: "Wrong API endpoint.",
+    status: res.status,
+  });
 });
 
 app.use(function (err, req, res, next) {
   console.error(err.message);
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).send(err.message);
+});
+
+// PORT
+const port = process.env.PORT || 4000;
+const server = app.listen(port, () => {
+  console.log("Connected to port " + port);
 });

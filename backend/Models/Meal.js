@@ -6,6 +6,9 @@ let mealSchema = new Schema(
     day: {
       type: String,
     },
+    timestamp: {
+      type: Number,
+    },
     time: {
       type: String,
     },

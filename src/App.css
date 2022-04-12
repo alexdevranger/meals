@@ -19,7 +19,7 @@ body h3 {
   margin: 0 auto;
 }
 .day {
-  width: 7%;
+  width: 10%;
 }
 .time {
   width: 9%;
@@ -104,4 +104,7 @@ label:focus,
   display: block;
   text-align: center;
   margin: auto;
+}
+.hidden {
+  display: none;
 }

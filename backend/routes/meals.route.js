@@ -1,5 +1,6 @@
 let mongoose = require("mongoose");
 const express = require("express");
+const moment = require("moment");
 const meal = express.Router();
 
 // Student Model
@@ -23,11 +24,15 @@ const mealsSchema = require("../models/Meal");
 // });
 
 meal.post("/create-meal", (req, res) => {
+  let timestamp = req.body.day;
+  console.log("timestamp", timestamp);
   const newItem = new mealsSchema({
     day: req.body.day,
     time: req.body.time,
     mealDetail: req.body.mealDetail,
+    timestamp: req.body.timestamp,
   });
+  console.log("nm", newItem.day);
   newItem
     .save()
     .then((item) => res.json(item))
@@ -63,43 +68,14 @@ meal.post("/create-meal", (req, res) => {
 //       console.error(error);
 //     });
 // });
-// meal.get("/today", (req, res) => {
-//   const current = new Date();
-//   const dateToday = `${current.getDate()}.${
-//     current.getMonth() + 1
-//   }.${current.getFullYear()}`;
-
-//   mealsSchema
-//     .find(
-//       {
-//         day: dateToday,
-//       },
-//       "-__v"
-//     )
-//     .sort({
-//       _id: "1",
-//     })
-//     .lean()
-//     .exec()
-//     .then((result) => {
-//       console.log(result);
-//       res.send(result);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// });
 meal.get("/meal-list", (req, res) => {
   const current = new Date();
-  var yesterday = new Date(new Date().setDate(current.getDate() - 2));
-  const oneDayAgo = `${yesterday.getDate()}.${
-    yesterday.getMonth() + 1
-  }.${yesterday.getFullYear()}`;
-  console.log("oneDayAgo", oneDayAgo);
+  const dateToday = moment(current).format("DD-MMM-YYYY");
+  console.log("dateToday", dateToday);
   mealsSchema
     .find(
       {
-        day: { $gt: oneDayAgo },
+        day: dateToday,
       },
       "-__v"
     )
@@ -116,18 +92,47 @@ meal.get("/meal-list", (req, res) => {
       console.error(error);
     });
 });
+// meal.get("/meal-list", (req, res) => {
+//   const current = new Date();
+//   var yesterday = new Date(new Date().setDate(current.getDate() - 2));
+//   const oneDayAgo = `${yesterday.getDate()}.${
+//     yesterday.getMonth() + 1
+//   }.${yesterday.getFullYear()}`;
+//   console.log("oneDayAgo", oneDayAgo);
+//   mealsSchema
+//     .find(
+//       {
+//         day: { $gt: oneDayAgo },
+//       },
+//       "-__v"
+//     )
+//     .sort({
+//       _id: "1",
+//     })
+//     .lean()
+//     .exec()
+//     .then((result) => {
+//       console.log(result);
+//       res.send(result);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// });
 meal.get("/week", (req, res) => {
   const current = new Date();
-  var weekAgo = new Date(new Date().setDate(current.getDate() - 8));
+  var weekAgo = new Date(new Date().setDate(current.getDate() - 7)).setHours(
+    0,
+    0,
+    1
+  );
   console.log("weekago", weekAgo);
-  const seven = `${weekAgo.getDate()}.${
-    weekAgo.getMonth() + 1
-  }.${weekAgo.getFullYear()}`;
+  const seven = parseInt(moment(weekAgo).format("X"));
   console.log("seven", seven);
   mealsSchema
     .find(
       {
-        day: { $gt: seven },
+        timestamp: { $gt: seven },
       },
       "-__v"
     )
@@ -146,15 +151,15 @@ meal.get("/week", (req, res) => {
 });
 meal.get("/twoweeks", (req, res) => {
   const current = new Date();
-  var twoweeksAgo = new Date(new Date().setDate(current.getDate() - 15));
+  var twoweeksAgo = new Date(
+    new Date().setDate(current.getDate() - 14)
+  ).setHours(0, 0, 1);
   console.log("twoweeksAgo", twoweeksAgo);
-  const twoWeeks = `${twoweeksAgo.getDate()}.${
-    twoweeksAgo.getMonth() + 1
-  }.${twoweeksAgo.getFullYear()}`;
+  const twoWeeks = parseInt(moment(twoweeksAgo).format("X"));
   mealsSchema
     .find(
       {
-        day: { $gt: twoWeeks },
+        timestamp: { $gt: twoWeeks },
       },
       "-__v"
     )
@@ -173,15 +178,21 @@ meal.get("/twoweeks", (req, res) => {
 });
 meal.get("/month", (req, res) => {
   const current = new Date();
-  var monthAgo = new Date(new Date().setDate(current.getDate() - 31));
+  console.log("current", current);
+  var milliseconds = new Date().getTime();
+  console.log("milliseconds", milliseconds);
+  var monthAgo = new Date(new Date().setDate(current.getDate() - 31)).setHours(
+    0,
+    0,
+    1
+  );
   console.log("monthAgo", monthAgo);
-  const month = `${monthAgo.getDate()}.${
-    monthAgo.getMonth() + 1
-  }.${monthAgo.getFullYear()}`;
+  const month = parseInt(moment(monthAgo).format("X"));
+  console.log("month", month);
   mealsSchema
     .find(
       {
-        day: { $gt: month },
+        timestamp: { $gt: month },
       },
       "-__v"
     )
@@ -200,15 +211,16 @@ meal.get("/month", (req, res) => {
 });
 meal.get("/sixweeks", (req, res) => {
   const current = new Date();
-  var sixweeksAgo = new Date(new Date().setDate(current.getDate() - 46));
+  var sixweeksAgo = new Date(
+    new Date().setDate(current.getDate() - 45)
+  ).setHours(0, 0, 1);
   console.log("sixweeksAgo", sixweeksAgo);
-  const sixWeeks = `${sixweeksAgo.getDate()}.${
-    sixweeksAgo.getMonth() + 1
-  }.${sixweeksAgo.getFullYear()}`;
+  const sixWeeks = parseInt(moment(sixweeksAgo).format("X"));
+  console.log("sixWeeks", sixWeeks);
   mealsSchema
     .find(
       {
-        day: { $gt: sixWeeks },
+        timestamp: { $gt: sixWeeks },
       },
       "-__v"
     )
@@ -227,15 +239,16 @@ meal.get("/sixweeks", (req, res) => {
 });
 meal.get("/twomonths", (req, res) => {
   const current = new Date();
-  var twomonthsAgo = new Date(new Date().setDate(current.getDate() - 61));
+  var twomonthsAgo = new Date(
+    new Date().setDate(current.getDate() - 60)
+  ).setHours(0, 0, 1);
   console.log("twomonthsAgo", twomonthsAgo);
-  const twomonths = `${twomonthsAgo.getDate()}.${
-    twomonthsAgo.getMonth() + 1
-  }.${twomonthsAgo.getFullYear()}`;
+  const twomonths = parseInt(moment(twomonthsAgo).format("X"));
+  console.log("twomonths", twomonths);
   mealsSchema
     .find(
       {
-        day: { $gt: twomonths },
+        timestamp: { $gt: twomonths },
       },
       "-__v"
     )
